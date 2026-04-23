@@ -1,0 +1,122 @@
+[
+  {
+    "id": "1",
+    "name": "Classic Blue Sunglasses",
+    "price": 29.99,
+    "color": "blue",
+    "description": "Premium polarized sunglasses with blue lenses and durable frames.",
+    "category": "eyewear"
+  },
+  {
+    "id": "2",
+    "name": "Midnight Aviators",
+    "price": 45.00,
+    "color": "black",
+    "description": "Sleek black aviators for a timeless look.",
+    "category": "eyewear"
+  },
+  {
+    "id": "3",
+    "name": "Sporty Blue Shades",
+    "price": 19.99,
+    "color": "blue",
+    "description": "Lightweight sunglasses for active users. Best value blue sunglasses.",
+    "category": "eyewear"
+  },
+  {
+    "id": "4",
+    "name": "Rose Gold Round Glasses",
+    "price": 35.00,
+    "color": "gold",
+    "description": "Elegant round glasses with a rose gold finish.",
+    "category": "eyewear"
+  },
+  {
+    "id": "5",
+    "name": "Tortoise Shell Wayfarers",
+    "price": 55.00,
+    "color": "brown",
+    "description": "Classic wayfarer design with a tortoise shell pattern.",
+    "category": "eyewear"
+  },
+  {
+    "id": "6",
+    "name": "Oceanic Deep Blue Specs",
+    "price": 12.50,
+    "color": "blue",
+    "description": "Affordable blue specs for beach lovers.",
+    "category": "eyewear"
+  },
+  {
+    "id": "7",
+    "name": "Golden Luxury Frames",
+    "price": 89.99,
+    "color": "gold",
+    "description": "High-end frames with 24k gold plating accents.",
+    "category": "eyewear"
+  },
+  {
+    "id": "8",
+    "name": "Stealth Black Wraps",
+    "price": 39.99,
+    "color": "black",
+    "description": "Full-wrap design for maximum protection and style.",
+    "category": "eyewear"
+  },
+  {
+    "id": "9",
+    "name": "Retro Brown Cat-Eye",
+    "price": 24.99,
+    "color": "brown",
+    "description": "Vintage inspired cat-eye glasses with a brown tint.",
+    "category": "eyewear"
+  },
+  {
+    "id": "10",
+    "name": "Crystal Clear Lens",
+    "price": 49.99,
+    "color": "white",
+    "description": "Modern clear frames with anti-reflective coating.",
+    "category": "eyewear"
+  },
+  {
+    "id": "11",
+    "name": "Crimson Ruby Spectacles",
+    "price": 65.00,
+    "color": "red",
+    "description": "Bold red frames with ruby-tinted lenses.",
+    "category": "eyewear"
+  },
+  {
+    "id": "12",
+    "name": "Emerald Green Goggles",
+    "price": 32.50,
+    "color": "green",
+    "description": "Vibrant green goggles for extreme sports and style.",
+    "category": "eyewear"
+  },
+  {
+    "id": "13",
+    "name": "Silver Streamliners",
+    "price": 75.00,
+    "color": "silver",
+    "description": "Ultra-lightweight silver titanium frames.",
+    "category": "eyewear"
+  },
+  {
+    "id": "14",
+    "name": "Purple Haze Rounds",
+    "price": 28.99,
+    "color": "purple",
+    "description": "Bohemian style round glasses with purple lenses.",
+    "category": "eyewear"
+  },
+  {
+    "id": "15",
+    "name": "Sunset Orange Wraps",
+    "price": 42.00,
+    "color": "orange",
+    "description": "Warm orange tints perfect for driving at dusk.",
+    "category": "eyewear"
+  }
+]
