@@ -166,6 +166,7 @@ export function useStoreActions() {
   return {
     cart,
     setCart,
+    products: productsData as Product[],
     filteredProducts,
     searchQuery,
     setSearchQuery,
