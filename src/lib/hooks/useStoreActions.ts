@@ -12,6 +12,7 @@ export interface Product {
   color: string;
   description: string;
   category: string;
+  image: string;
 }
 
 export interface CartItem extends Product {
@@ -23,20 +24,29 @@ export function useStoreActions() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterColor, setFilterColor] = useState<string | null>(null);
+  const [filterCategory, setFilterCategory] = useState<string | null>(null);
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
 
   const filteredProducts = useMemo(() => {
     return (productsData as Product[]).filter((p) => {
-      const matchesSearch = p.name
+      const name = p.name || "";
+      const query = searchQuery || "";
+      const matchesSearch = name
         .toLowerCase()
-        .includes(searchQuery.toLowerCase());
+        .includes(query.toLowerCase());
       const matchesColor = filterColor ? p.color === filterColor : true;
+      const matchesCategory = filterCategory ? p.category === filterCategory : true;
       const matchesPrice = maxPrice ? p.price <= maxPrice : true;
-      return matchesSearch && matchesColor && matchesPrice;
+      return matchesSearch && matchesColor && matchesCategory && matchesPrice;
     });
-  }, [searchQuery, filterColor, maxPrice]);
+  }, [searchQuery, filterColor, filterCategory, maxPrice]);
 
   // Make state readable to Copilot
+  useCopilotReadable({
+    description: "The currently applied filters.",
+    value: { searchQuery, filterColor, filterCategory, maxPrice },
+  });
+
   useCopilotReadable({
     description: "The list of products available in the store.",
     value: productsData,
@@ -63,17 +73,19 @@ export function useStoreActions() {
         description: "Search query for product name.",
       },
       { name: "color", type: "string", description: "Filter by color." },
+      { name: "category", type: "string", description: "Filter by category (e.g., eyewear, watches, bags, headwear, accessories)." },
       {
         name: "maxPrice",
         type: "number",
         description: "Maximum price filter.",
       },
     ],
-    handler: ({ query, color, maxPrice }) => {
-      if (query !== undefined) setSearchQuery(query);
-      if (color !== undefined) setFilterColor(color);
-      if (maxPrice !== undefined) setMaxPrice(maxPrice);
-      return `Filters updated. Query: ${query || "none"}, Color: ${color || "any"}, Max Price: ${maxPrice || "any"}`;
+    handler: ({ query, color, category, maxPrice }) => {
+      if (query !== undefined) setSearchQuery(query || "");
+      if (color !== undefined) setFilterColor(color || null);
+      if (category !== undefined) setFilterCategory(category || null);
+      if (maxPrice !== undefined) setMaxPrice(maxPrice || null);
+      return `Filters updated. Query: ${query || "none"}, Color: ${color || "any"}, Category: ${category || "any"}, Max Price: ${maxPrice || "any"}`;
     },
   });
 
@@ -160,12 +172,13 @@ export function useStoreActions() {
       },
     ],
     handler: async ({ itemName }) => {
-      // Logic for multi-step:
-      // 1. Find matches
+      if (!itemName) return "Please specify an item name.";
+      const searchTerm = itemName.toLowerCase();
+      
       const matches = (productsData as Product[]).filter(
         (p) =>
-          p.name.toLowerCase().includes(itemName.toLowerCase()) ||
-          p.category.toLowerCase().includes(itemName.toLowerCase()),
+          (p.name || "").toLowerCase().includes(searchTerm) ||
+          (p.category || "").toLowerCase().includes(searchTerm),
       );
       if (matches.length === 0) return "No matches found.";
 
@@ -221,6 +234,8 @@ export function useStoreActions() {
     setSearchQuery,
     filterColor,
     setFilterColor,
+    filterCategory,
+    setFilterCategory,
     maxPrice,
     setMaxPrice,
     handleAddToCart,
