@@ -1,7 +1,20 @@
 "use client";
 
-import { useStoreActions, Product, CartItem } from "@/lib/hooks/useStoreActions";
-import { ShoppingCart, Search, Trash2, Mic, MicOff, Star, ArrowRight, X } from "lucide-react";
+import {
+  useStoreActions,
+  Product,
+  CartItem,
+} from "@/lib/hooks/useStoreActions";
+import {
+  ShoppingCart,
+  Search,
+  Trash2,
+  Mic,
+  MicOff,
+  Star,
+  ArrowRight,
+  X,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -42,7 +55,7 @@ export default function StoreUI() {
       favoriteColor: "Indigo",
       budgetLimit: 2500,
       recentlyViewed: ["Classic Aviators", "Midnight Shades"],
-      isPremiumMember: true
+      isPremiumMember: true,
     },
   });
 
@@ -59,8 +72,16 @@ export default function StoreUI() {
     name: "searchProducts",
     description: "Filter products by name, color, or maximum price.",
     parameters: [
-      { name: "query", type: "string", description: "Search query for product name" },
-      { name: "color", type: "string", description: "Filter by color (e.g., blue, black, gold)" },
+      {
+        name: "query",
+        type: "string",
+        description: "Search query for product name",
+      },
+      {
+        name: "color",
+        type: "string",
+        description: "Filter by color (e.g., blue, black, gold)",
+      },
       { name: "maxPrice", type: "number", description: "Maximum price filter" },
     ],
     handler: ({ query, color, maxPrice }) => {
@@ -74,8 +95,16 @@ export default function StoreUI() {
     name: "addToCart",
     description: "Add a product to the shopping cart by its ID.",
     parameters: [
-      { name: "productId", type: "string", description: "The unique ID of the product" },
-      { name: "quantity", type: "number", description: "Number of items to add" },
+      {
+        name: "productId",
+        type: "string",
+        description: "The unique ID of the product",
+      },
+      {
+        name: "quantity",
+        type: "number",
+        description: "Number of items to add",
+      },
     ],
     handler: ({ productId }) => {
       handleAddToCart(productId);
@@ -88,13 +117,20 @@ export default function StoreUI() {
    */
   useCopilotAction({
     name: "quickBuy",
-    description: "Quickly buy a product by name. Handles search and add-to-cart in one flow.",
+    description:
+      "Quickly buy a product by name. Handles search and add-to-cart in one flow.",
     parameters: [
-      { name: "productName", type: "string", description: "The name of the product to buy" }
+      {
+        name: "productName",
+        type: "string",
+        description: "The name of the product to buy",
+      },
     ],
     handler: async ({ productName }) => {
       setSearchQuery(productName);
-      const product = products.find((p: Product) => p.name.toLowerCase().includes(productName.toLowerCase()));
+      const product = products.find((p: Product) =>
+        p.name.toLowerCase().includes(productName.toLowerCase()),
+      );
       if (product) {
         handleAddToCart(product.id);
         return `Found ${product.name} and added it to your cart!`;
@@ -107,7 +143,12 @@ export default function StoreUI() {
     name: "navigateTo",
     description: "Navigate to a specific page in the application.",
     parameters: [
-      { name: "path", type: "string", enum: ["/", "/checkout"], description: "The destination path" },
+      {
+        name: "path",
+        type: "string",
+        enum: ["/", "/checkout"],
+        description: "The destination path",
+      },
     ],
     handler: ({ path }) => {
       router.push(path);
@@ -118,12 +159,17 @@ export default function StoreUI() {
 
   const toggleVoice = () => {
     if (typeof window === "undefined") return;
-    if (!("webkitSpeechRecognition" in window) && !("speechRecognition" in window)) {
+    if (
+      !("webkitSpeechRecognition" in window) &&
+      !("speechRecognition" in window)
+    ) {
       alert("Speech recognition not supported in this browser.");
       return;
     }
 
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const SpeechRecognition =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
 
     recognition.continuous = false;
@@ -147,14 +193,16 @@ export default function StoreUI() {
   return (
     <div className="min-h-screen relative p-4 md:p-8 flex flex-col gap-8 max-w-7xl mx-auto">
       <div className="mesh-bg" />
-      
+
       {/* Header Section */}
       <header className="glass sticky top-4 z-40 p-4 md:p-6 rounded-3xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 transition-all">
         <div className="flex items-center gap-3">
           <div className="bg-indigo-600 p-3 rounded-2xl shadow-lg shadow-indigo-200">
             <ShoppingCart className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-2xl font-black text-slate-800 tracking-tight">Kombee Store</h1>
+          <h1 className="text-2xl font-black text-slate-800 tracking-tight">
+            Kombee Store
+          </h1>
         </div>
 
         <div className="flex-1 max-w-xl w-full relative group">
@@ -168,13 +216,19 @@ export default function StoreUI() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button 
+          <button
             onClick={toggleVoice}
             className={`absolute inset-y-2 right-2 p-2 rounded-xl transition-all ${
-              isListening ? "bg-red-500 text-white animate-pulse" : "bg-slate-200 text-slate-500 hover:bg-slate-300"
+              isListening
+                ? "bg-red-500 text-white animate-pulse"
+                : "bg-slate-200 text-slate-500 hover:bg-slate-300"
             }`}
           >
-            {isListening ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
+            {isListening ? (
+              <Mic className="w-5 h-5" />
+            ) : (
+              <MicOff className="w-5 h-5" />
+            )}
           </button>
         </div>
 
@@ -183,16 +237,22 @@ export default function StoreUI() {
             {["blue", "black", "gold", "brown"].map((color) => (
               <button
                 key={color}
-                onClick={() => setFilterColor(color === filterColor ? null : color)}
+                onClick={() =>
+                  setFilterColor(color === filterColor ? null : color)
+                }
                 className={`w-8 h-8 rounded-full border-2 transition-all transform hover:scale-110 active:scale-95 ${
-                  filterColor === color ? "border-indigo-600 scale-125 shadow-md" : "border-transparent"
+                  filterColor === color
+                    ? "border-indigo-600 scale-125 shadow-md"
+                    : "border-transparent"
                 }`}
-                style={{ backgroundColor: color === "gold" ? "#fbbf24" : color }}
+                style={{
+                  backgroundColor: color === "gold" ? "#fbbf24" : color,
+                }}
                 title={`Filter ${color}`}
               />
             ))}
             {(filterColor || searchQuery || maxPrice) && (
-              <button 
+              <button
                 onClick={() => {
                   setFilterColor(null);
                   setSearchQuery("");
@@ -212,11 +272,12 @@ export default function StoreUI() {
         <div className="flex-1 w-full">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-xl font-bold text-slate-800">
-              {filteredProducts.length} <span className="text-slate-400 font-medium">Products found</span>
+              {filteredProducts.length}{" "}
+              <span className="text-slate-400 font-medium">Products found</span>
             </h2>
           </div>
 
-          <motion.div 
+          <motion.div
             layout
             className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
           >
@@ -239,19 +300,25 @@ export default function StoreUI() {
                     <ShoppingCart className="w-16 h-16 text-slate-200 transform group-hover:scale-110 group-hover:rotate-12 transition-transform duration-500" />
                     <div className="absolute inset-0 bg-gradient-to-t from-indigo-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  
+
                   <div className="px-2">
-                    <h3 className="font-bold text-lg text-slate-800 mb-1 group-hover:text-indigo-600 transition-colors">{product.name}</h3>
+                    <h3 className="font-bold text-lg text-slate-800 mb-1 group-hover:text-indigo-600 transition-colors">
+                      {product.name}
+                    </h3>
                     <p className="text-slate-400 text-sm mb-4 line-clamp-2 group-hover:line-clamp-none transition-all duration-300">
                       {product.description}
                     </p>
-                    
+
                     <div className="flex items-center justify-between mt-auto pt-4 border-t border-slate-50">
                       <div className="flex flex-col">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Price</span>
-                        <span className="text-xl font-black text-indigo-600">${product.price.toFixed(2)}</span>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+                          Price
+                        </span>
+                        <span className="text-xl font-black text-indigo-600">
+                          ${product.price.toFixed(2)}
+                        </span>
                       </div>
-                      <button 
+                      <button
                         onClick={() => handleAddToCart(product.id)}
                         className="bg-slate-900 text-white px-6 py-3 rounded-2xl text-sm font-bold hover:bg-indigo-600 active:scale-95 transition-all shadow-lg shadow-slate-200"
                       >
@@ -269,15 +336,17 @@ export default function StoreUI() {
         <aside className="w-full lg:w-96 glass p-6 rounded-[2.5rem] sticky top-24 shadow-2xl border border-white/40">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-xl font-black text-slate-800 flex items-center gap-3">
-              Your Cart 
-              <span className="bg-indigo-100 text-indigo-600 text-xs px-2 py-1 rounded-lg">{cart.length} items</span>
+              Your Cart
+              <span className="bg-indigo-100 text-indigo-600 text-xs px-2 py-1 rounded-lg">
+                {cart.length} items
+              </span>
             </h3>
           </div>
 
           <div className="space-y-6 max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar">
             <AnimatePresence initial={false}>
               {cart.length === 0 ? (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="py-20 text-center flex flex-col items-center gap-4"
@@ -285,7 +354,9 @@ export default function StoreUI() {
                   <div className="bg-slate-50 p-6 rounded-full">
                     <ShoppingCart className="w-12 h-12 text-slate-200" />
                   </div>
-                  <p className="text-slate-400 font-medium">Your cart is empty</p>
+                  <p className="text-slate-400 font-medium">
+                    Your cart is empty
+                  </p>
                 </motion.div>
               ) : (
                 cart.map((item) => (
@@ -297,14 +368,22 @@ export default function StoreUI() {
                     className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-50 shadow-sm hover:shadow-md transition-all"
                   >
                     <div className="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center">
-                      <span className="text-xs font-black text-slate-300">{item.color.slice(0,1).toUpperCase()}</span>
+                      <span className="text-xs font-black text-slate-300">
+                        {item.color.slice(0, 1).toUpperCase()}
+                      </span>
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-sm font-bold text-slate-800">{item.name}</h4>
-                      <p className="text-xs text-indigo-500 font-bold">${item.price.toFixed(2)} x {item.quantity}</p>
+                      <h4 className="text-sm font-bold text-slate-800">
+                        {item.name}
+                      </h4>
+                      <p className="text-xs text-indigo-500 font-bold">
+                        ${item.price.toFixed(2)} x {item.quantity}
+                      </p>
                     </div>
-                    <button 
-                      onClick={() => setCart(prev => prev.filter(i => i.id !== item.id))}
+                    <button
+                      onClick={() =>
+                        setCart((prev) => prev.filter((i) => i.id !== item.id))
+                      }
                       className="p-2 text-slate-300 hover:text-red-500 transition-colors"
                     >
                       <Trash2 className="w-5 h-5" />
@@ -318,12 +397,17 @@ export default function StoreUI() {
           {cart.length > 0 && (
             <div className="mt-8 pt-8 border-t border-slate-100 space-y-6">
               <div className="flex items-center justify-between">
-                <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Total Amount</span>
+                <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">
+                  Total Amount
+                </span>
                 <span className="text-2xl font-black text-slate-800">
-                  ${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}
+                  $
+                  {cart
+                    .reduce((sum, item) => sum + item.price * item.quantity, 0)
+                    .toFixed(2)}
                 </span>
               </div>
-              <button 
+              <button
                 onClick={() => router.push("/checkout")}
                 className="w-full bg-indigo-600 text-white py-5 rounded-[1.5rem] font-black text-lg hover:bg-indigo-700 shadow-xl shadow-indigo-100 flex items-center justify-center gap-3 active:scale-[0.98] transition-all"
               >

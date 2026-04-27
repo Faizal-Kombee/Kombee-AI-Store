@@ -10,13 +10,17 @@ import { Mic, MicOff } from "lucide-react";
 function VoiceHandler() {
   const { visibleMessages: messages, appendMessage } = useCopilotChat();
   const [isListening, setIsListening] = useState(false);
-  
+
   useEffect(() => {
-    if (typeof window === "undefined" || !messages || messages.length === 0) return;
-    
+    if (typeof window === "undefined" || !messages || messages.length === 0)
+      return;
+
     const lastMessage = messages[messages.length - 1];
-    
-    if (lastMessage instanceof TextMessage && lastMessage.role === MessageRole.Assistant) {
+
+    if (
+      lastMessage instanceof TextMessage &&
+      lastMessage.role === MessageRole.Assistant
+    ) {
       const content = lastMessage.content;
       if (typeof content === "string") {
         window.speechSynthesis.cancel();
@@ -28,7 +32,9 @@ function VoiceHandler() {
 
   const toggleListening = () => {
     if (typeof window === "undefined") return;
-    const SpeechConstructor = (window as any).webkitSpeechRecognition || (window as any).speechRecognition;
+    const SpeechConstructor =
+      (window as any).webkitSpeechRecognition ||
+      (window as any).speechRecognition;
     if (!SpeechConstructor) return;
 
     if (isListening) {
@@ -46,7 +52,9 @@ function VoiceHandler() {
     recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript;
       if (transcript) {
-        appendMessage(new TextMessage({ role: MessageRole.User, content: transcript }));
+        appendMessage(
+          new TextMessage({ role: MessageRole.User, content: transcript }),
+        );
       }
     };
     recognition.start();
@@ -57,16 +65,26 @@ function VoiceHandler() {
       <button
         onClick={toggleListening}
         className={`p-3 rounded-full shadow-lg transition-all ${
-          isListening ? "bg-red-500 text-white animate-pulse" : "bg-white text-indigo-600 hover:bg-indigo-50"
+          isListening
+            ? "bg-red-500 text-white animate-pulse"
+            : "bg-white text-indigo-600 hover:bg-indigo-50"
         }`}
       >
-        {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+        {isListening ? (
+          <MicOff className="w-5 h-5" />
+        ) : (
+          <Mic className="w-5 h-5" />
+        )}
       </button>
     </div>
   );
 }
 
-export default function CopilotWrapper({ children }: { children: React.ReactNode }) {
+export default function CopilotWrapper({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

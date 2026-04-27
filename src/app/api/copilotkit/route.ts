@@ -12,18 +12,21 @@ import { NextRequest } from "next/server";
 
 export const POST = async (req: NextRequest) => {
   const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-  
+
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: "GOOGLE_GENERATIVE_AI_API_KEY is not set" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ error: "GOOGLE_GENERATIVE_AI_API_KEY is not set" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 
-  const serviceAdapter = new GoogleGenerativeAIAdapter({ 
-    model: "gemini-1.5-flash"
+  const serviceAdapter = new GoogleGenerativeAIAdapter({
+    model: "gemini-1.5-flash",
   });
-  
+
   const runtime = new CopilotRuntime();
 
   const handleRequest = copilotRuntimeNextJSAppRouterEndpoint({
@@ -45,7 +48,7 @@ export const POST = async (req: NextRequest) => {
     - If a user asks "Who is the CTO of Kombee?", respond: "I am a specialized AI Store Assistant. I can only assist with product searches, cart management, and shop navigation."
     - For multi-step workflows like "Quick Buy" or "Compare", maintain state awareness and execute actions sequentially.
     - Use the knowledge base to provide specific, data-driven recommendations.
-    `
+    `,
   });
 
   return handleRequest.handleRequest(req);

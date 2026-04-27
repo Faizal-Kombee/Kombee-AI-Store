@@ -27,7 +27,9 @@ export function useStoreActions() {
 
   const filteredProducts = useMemo(() => {
     return (productsData as Product[]).filter((p) => {
-      const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = p.name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
       const matchesColor = filterColor ? p.color === filterColor : true;
       const matchesPrice = maxPrice ? p.price <= maxPrice : true;
       return matchesSearch && matchesColor && matchesPrice;
@@ -55,15 +57,23 @@ export function useStoreActions() {
     name: "searchProducts",
     description: "Search and filter products in the store.",
     parameters: [
-      { name: "query", type: "string", description: "Search query for product name." },
+      {
+        name: "query",
+        type: "string",
+        description: "Search query for product name.",
+      },
       { name: "color", type: "string", description: "Filter by color." },
-      { name: "maxPrice", type: "number", description: "Maximum price filter." },
+      {
+        name: "maxPrice",
+        type: "number",
+        description: "Maximum price filter.",
+      },
     ],
     handler: ({ query, color, maxPrice }) => {
       if (query !== undefined) setSearchQuery(query);
       if (color !== undefined) setFilterColor(color);
       if (maxPrice !== undefined) setMaxPrice(maxPrice);
-      return `Filters updated. Query: ${query || 'none'}, Color: ${color || 'any'}, Max Price: ${maxPrice || 'any'}`;
+      return `Filters updated. Query: ${query || "none"}, Color: ${color || "any"}, Max Price: ${maxPrice || "any"}`;
     },
   });
 
@@ -71,17 +81,30 @@ export function useStoreActions() {
     name: "addToCart",
     description: "Add a product to the shopping cart.",
     parameters: [
-      { name: "productId", type: "string", description: "The ID of the product to add." },
-      { name: "quantity", type: "number", description: "Quantity to add.", default: 1 },
+      {
+        name: "productId",
+        type: "string",
+        description: "The ID of the product to add.",
+      },
+      {
+        name: "quantity",
+        type: "number",
+        description: "Quantity to add.",
+        default: 1,
+      },
     ],
     handler: ({ productId, quantity = 1 }) => {
-      const product = (productsData as Product[]).find((p) => p.id === productId);
+      const product = (productsData as Product[]).find(
+        (p) => p.id === productId,
+      );
       if (product) {
         setCart((prev) => {
           const existing = prev.find((item) => item.id === productId);
           if (existing) {
             return prev.map((item) =>
-              item.id === productId ? { ...item, quantity: item.quantity + quantity } : item
+              item.id === productId
+                ? { ...item, quantity: item.quantity + quantity }
+                : item,
             );
           }
           return [...prev, { ...product, quantity }];
@@ -96,7 +119,11 @@ export function useStoreActions() {
     name: "removeFromCart",
     description: "Remove a product from the shopping cart.",
     parameters: [
-      { name: "productId", type: "string", description: "The ID of the product to remove." },
+      {
+        name: "productId",
+        type: "string",
+        description: "The ID of the product to remove.",
+      },
     ],
     handler: ({ productId }) => {
       setCart((prev) => prev.filter((item) => item.id !== productId));
@@ -108,7 +135,12 @@ export function useStoreActions() {
     name: "navigateTo",
     description: "Navigate to a different part of the application.",
     parameters: [
-      { name: "path", type: "string", description: "The path to navigate to (e.g., '/', '/cart', '/checkout')." },
+      {
+        name: "path",
+        type: "string",
+        description:
+          "The path to navigate to (e.g., '/', '/cart', '/checkout').",
+      },
     ],
     handler: ({ path }) => {
       router.push(path);
@@ -118,24 +150,39 @@ export function useStoreActions() {
 
   useCopilotAction({
     name: "quickBuy",
-    description: "Find an item, compare with cheaper alternative, and proceed to checkout.",
+    description:
+      "Find an item, compare with cheaper alternative, and proceed to checkout.",
     parameters: [
-      { name: "itemName", type: "string", description: "The name or type of item to find." },
+      {
+        name: "itemName",
+        type: "string",
+        description: "The name or type of item to find.",
+      },
     ],
     handler: async ({ itemName }) => {
-      // Logic for multi-step: 
+      // Logic for multi-step:
       // 1. Find matches
-      const matches = (productsData as Product[]).filter(p => p.name.toLowerCase().includes(itemName.toLowerCase()) || p.category.toLowerCase().includes(itemName.toLowerCase()));
+      const matches = (productsData as Product[]).filter(
+        (p) =>
+          p.name.toLowerCase().includes(itemName.toLowerCase()) ||
+          p.category.toLowerCase().includes(itemName.toLowerCase()),
+      );
       if (matches.length === 0) return "No matches found.";
-      
+
       // 2. Find cheapest
-      const cheapest = matches.reduce((prev, curr) => prev.price < curr.price ? prev : curr);
-      
+      const cheapest = matches.reduce((prev, curr) =>
+        prev.price < curr.price ? prev : curr,
+      );
+
       // 3. Add to cart
       setCart((prev) => {
         const existing = prev.find((item) => item.id === cheapest.id);
         if (existing) {
-          return prev.map((item) => item.id === cheapest.id ? { ...item, quantity: item.quantity + 1 } : item);
+          return prev.map((item) =>
+            item.id === cheapest.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item,
+          );
         }
         return [...prev, { ...cheapest, quantity: 1 }];
       });
@@ -156,7 +203,9 @@ export function useStoreActions() {
       const existing = prev.find((item) => item.id === productId);
       if (existing) {
         return prev.map((item) =>
-          item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === productId
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
         );
       }
       return [...prev, { ...product, quantity: 1 }];
